@@ -26,10 +26,10 @@ class RoleConfiguration:IEntityTypeConfiguration<Role>
             j => j
             .HasOne(p => p.Role)
             .WithMany(p => p.UsersRoles)
-            .HasForeignKey(p => p.IdRolFk),
+            .HasForeignKey(p => p.IdRoleFk),
             j =>
             {
-                j.HasKey(t => new {t.IdRolFk,t.IdUserFk});
+                j.HasKey(t => new {t.IdRoleFk,t.IdUserFk});
             });
     }
 }

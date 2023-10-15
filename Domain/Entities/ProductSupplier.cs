@@ -7,7 +7,7 @@ namespace Domain.Entities;
     public class ProductSupplier
     {
         public int IdSupplierFk {get;set;}
-        public Supplier Supplier {get;set;}   
+        public Person Supplier {get;set;}   
         public int IdProductFk {get;set;}
         public Product Product {get;set;}   
     }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class MovementType: BaseEntity
+    public class Especiality : BaseEntity
     {
         public string Description {get;set;}
-        public ICollection<ProductMovement> ProductMovements {get;set;}
+        public ICollection<Person> People {get;set;}
     }
 }

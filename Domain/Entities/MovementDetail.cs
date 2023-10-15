@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities
 {
-    public class MovenmentDetail:BaseEntity
+    public class MovementDetail:BaseEntity
     {
         public int idProductFk {get;set;}
         public Product Product {get;set;}
