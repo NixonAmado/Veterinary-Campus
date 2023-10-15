@@ -8,7 +8,7 @@ namespace Domain.Entities
     public class ProductMovement:BaseEntity
     {
         public int IdProductFk {get;set;}
-        public double Quantity {get;set;}
+        public int Quantity {get;set;}
         public DateTime Date{get;set;}
         public int IdMovementTypeFk {get;set;}
         public MovementType MovementType {get;set;} 
