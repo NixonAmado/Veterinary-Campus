@@ -1,0 +1,111 @@
+using API.Dtos;
+using API.Helpers;
+using AutoMapper;
+using Domain.Entities;
+using Domain.Interfaces;
+using Microsoft.AspNetCore.Mvc;
+
+namespace API.Controllers;
+    [ApiVersion("1.0")]
+    [ApiVersion("1.1")]
+
+    public class VeterinarianController : BaseApiController
+    {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        
+        public VeterinarianController(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork = unitOfWork;
+            _mapper = mapper;
+        }
+
+        //Crear un consulta que permita visualizar los veterinarios cuya especialidad sea X.
+        [HttpGet("GetByEspeciality/{Especiality}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<VeterinarianDto>>> GetByEspeciality(string especiality) 
+        {
+            var veterinarian = await _unitOfWork.People.GetVetByEspecialityAsync(especiality);
+            return _mapper.Map<List<VeterinarianDto>>(veterinarian);        
+        }
+
+
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<VeterinarianDto>>> Get() 
+        {
+            var veterinarian = await _unitOfWork.People.GetAllAsync();
+            return _mapper.Map<List<VeterinarianDto>>(veterinarian);        
+        }
+
+
+        [HttpGet]
+        [MapToApiVersion("1.1")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Pager<VeterinarianDto>>> Get11([FromQuery] Params VeterinarianParams )
+        {
+            var veterinarian = await _unitOfWork.People.GetAllAsync(VeterinarianParams.PageIndex,VeterinarianParams.PageSize,VeterinarianParams.Search);
+            var lstVeterinarianDto = _mapper.Map<List<VeterinarianDto>>(veterinarian.registros);
+            return new Pager<VeterinarianDto>(lstVeterinarianDto,veterinarian.totalRegistros,VeterinarianParams.PageIndex,VeterinarianParams.PageSize,VeterinarianParams.Search);
+        }
+
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Get(int Id)
+        {
+            var veterinarian = await _unitOfWork.People.GetByIdAsync(Id);
+            return Ok(veterinarian);
+        }
+
+
+
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<ActionResult<Person>> Post(Person Veterinarian)
+        {
+            _unitOfWork.People.Add(Veterinarian);
+            await _unitOfWork.SaveAsync();
+            if (Veterinarian == null)
+            {
+                return BadRequest();
+            }
+            return CreatedAtAction(nameof(Post), new { id = Veterinarian.Id }, Veterinarian);
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task <ActionResult<Person>> Put(int id, [FromBody] Person Veterinarian)
+        {
+            if (Veterinarian == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.People.Update(Veterinarian);
+            await _unitOfWork.SaveAsync();
+
+            return Veterinarian;
+        }
+
+        [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var veterinarian = await _unitOfWork.People.GetByIdAsync(id);
+            if (veterinarian == null)
+            {
+                return NotFound();
+            }
+            _unitOfWork.People.Remove(veterinarian);
+            await _unitOfWork.SaveAsync();
+            return NoContent();
+        }
+    }

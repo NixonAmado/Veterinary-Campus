@@ -15,6 +15,7 @@ namespace Domain.Entities
         public int IdVeterinarianFk {get;set;}
         public Person Veterinarian {get;set;}
 
+
         public ICollection<MedicalTreatment> MedicalTreatments {get;set;}
     }
 }
