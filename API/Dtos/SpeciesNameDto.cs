@@ -5,12 +5,9 @@ using System.Threading.Tasks;
 
 namespace API.Dtos
 {
-    public class OwnerDto
+    public class SpeciesNameDto
     {
         public int Id {get;set;}
         public string Name {get;set;}
-        public int IdPersonTypeFk {get;set;}
-        public string Email {get;set;}
-        public int PhoneNumber {get;set;}
     }
 }

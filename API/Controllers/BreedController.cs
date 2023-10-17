@@ -30,6 +30,16 @@ namespace API.Controllers;
             return Ok(breeds);        
         }
 
+        [HttpGet("GetPetCountInBreed")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<BreedListDto>>> GetPetCountInBreed() 
+        {
+            var breedList = await _unitOfWork.Breeds.GetPetCountInBreed();
+            return _mapper.Map<List<BreedListDto>>(breedList);        
+        }
+
         [HttpGet]
         [MapToApiVersion("1.1")]
         [ProducesResponseType(StatusCodes.Status200OK)]

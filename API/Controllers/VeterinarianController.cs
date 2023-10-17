@@ -19,6 +19,16 @@ namespace API.Controllers;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        //Listar las mascotas que fueron atendidas por un determinado veterinario.
+        [HttpGet("PetsAttendedByVet/{veterinarian}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<PetStatDto>>> PetsAttendedByVet(string veterinarian) 
+        {
+            var PetsAttendedByVet = await _unitOfWork.People.PetsAttendedByVet(veterinarian);
+            return _mapper.Map<List<PetStatDto>>(PetsAttendedByVet);        
+        }
 
         //Crear un consulta que permita visualizar los veterinarios cuya especialidad sea X.
         [HttpGet("GetByEspeciality/{Especiality}")]

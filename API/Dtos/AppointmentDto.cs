@@ -8,7 +8,7 @@ namespace API.Dtos
     public class AppointmentDto
     {
         public int Id {get;set;}
-        public PetDto Pet {get;set;}
+        public FullPetDto Pet {get;set;}
         public DateTime Date {get;set;}
         public double Hour {get;set;}
         public string Reason {get;set;}

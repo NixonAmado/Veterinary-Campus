@@ -24,6 +24,17 @@ namespace API.Controllers;
             _mapper = mapper;
         }
 
+        //Listar todos los movimientos de medicamentos y el valor total de cada movimiento.
+        [HttpGet("GetProductMovementAndVal")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<ProductMovementDto>>> GetProdMove() 
+        {
+            var productMovements = await _unitOfWork.ProductMovements.GetProductMovement();
+            return _mapper.Map<List<ProductMovementDto>>(productMovements);        
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 

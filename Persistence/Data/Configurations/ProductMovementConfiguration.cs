@@ -18,9 +18,16 @@ class ProductMovementConfiguration:IEntityTypeConfiguration<ProductMovement>
             .IsRequired()
             .HasMaxLength(10);
 
+        builder.Property(p => p.TotalPrice)
+            .HasColumnType("decimal(20,3)");
+
         builder.HasOne(p => p.MovementType)
             .WithMany(p => p.ProductMovements)
             .HasForeignKey(p => p.IdMovementTypeFk);
 
+        builder.HasOne(p => p.Product)
+            .WithMany(p => p.ProductMovements)
+            .HasForeignKey(p => p.IdProductFk);
+        
     }
 }

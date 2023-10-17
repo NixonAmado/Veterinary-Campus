@@ -3,12 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Dtos
+namespace Domain.Entities
 {
-    public class SpeciesDto
+    public class CountBreed
     {
-        public int Id {get;set;}
         public string Name {get;set;}
-        public List<PetStatDto> Pets {get;set;}
+        public int Pets {get;set;}
     }
 }

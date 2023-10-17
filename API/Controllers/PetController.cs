@@ -23,15 +23,46 @@ namespace API.Controllers;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        //Listar las mascotas y sus propietarios cuya raza sea Golden Retriver
+        [HttpGet("GetOwnerPetByBreed/{Breed}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        public async Task<ActionResult<IEnumerable<FullPetDto>>> GetOwnerPetByBreed(string breed) 
+        {
+            var pets = await _unitOfWork.Pets.GetOwnerPetByBreed(breed);
+            return _mapper.Map<List<FullPetDto>>(pets);        
+        }
+
+    
+
+        //Listar las mascotas que fueron atendidas por motivo de vacunacion en el X trimestre del X
+        [HttpGet("GetByReasonInTrimYear/{trim}/{year}/{reason}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        public async Task<ActionResult<IEnumerable<PetStatDto>>> GetBySpecies(int trim, int year, string reason) 
+        {
+            var pets = await _unitOfWork.Pets.GetAttendedByReasonInTrimesterYear(trim, year, reason);
+            return _mapper.Map<List<PetStatDto>>(pets);        
+        }
+
+        //Mostrar las mascotas que se encuentren registradas cuya especie sea felina.
+        [HttpGet("GetBySpecies/{Species}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        public async Task<ActionResult<IEnumerable<PetStatDto>>> GetBySpecies(string species) 
+        {
+            var pets = await _unitOfWork.Pets.GetAllBySpecies(species);
+            return _mapper.Map<List<PetStatDto>>(pets);        
+        }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<IEnumerable<PetDto>>> Get() 
+        public async Task<ActionResult<IEnumerable<FullPetDto>>> Get() 
         {
             var pets = await _unitOfWork.Pets.GetAllAsync();
-            return _mapper.Map<List<PetDto>>(pets);        
+            return _mapper.Map<List<FullPetDto>>(pets);        
         }
 
 
@@ -39,11 +70,11 @@ namespace API.Controllers;
         [MapToApiVersion("1.1")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Pager<PetDto>>> Get11([FromQuery] Params PetParams )
+        public async Task<ActionResult<Pager<FullPetDto>>> Get11([FromQuery] Params PetParams )
         {
             var pets = await _unitOfWork.Pets.GetAllAsync(PetParams.PageIndex,PetParams.PageSize,PetParams.Search);
-            var lstPetDto = _mapper.Map<List<PetDto>>(pets.registros);
-            return new Pager<PetDto>(lstPetDto,pets.totalRegistros,PetParams.PageIndex,PetParams.PageSize,PetParams.Search);
+            var lstFullPetDto = _mapper.Map<List<FullPetDto>>(pets.registros);
+            return new Pager<FullPetDto>(lstFullPetDto,pets.totalRegistros,PetParams.PageIndex,PetParams.PageSize,PetParams.Search);
         }
 
         [HttpGet("{id}")]

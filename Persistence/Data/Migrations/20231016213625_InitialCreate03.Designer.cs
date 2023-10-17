@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Persistencia.Data;
 
@@ -10,9 +11,11 @@ using Persistencia.Data;
 namespace Persistence.Data.Migrations
 {
     [DbContext(typeof(DbAppContext))]
-    partial class DbAppContextModelSnapshot : ModelSnapshot
+    [Migration("20231016213625_InitialCreate03")]
+    partial class InitialCreate03
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -219,7 +222,7 @@ namespace Persistence.Data.Migrations
                         .HasColumnType("varchar(70)");
 
                     b.Property<int>("PhoneNumber")
-                        .HasMaxLength(15)
+                        .HasMaxLength(10)
                         .HasColumnType("int");
 
                     b.HasKey("Id");
@@ -327,9 +330,6 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("Quantity")
                         .HasMaxLength(10)
                         .HasColumnType("int");
-
-                    b.Property<decimal>("TotalPrice")
-                        .HasColumnType("decimal(20,3)");
 
                     b.HasKey("Id");
 

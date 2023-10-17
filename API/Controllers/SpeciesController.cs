@@ -20,14 +20,25 @@ namespace API.Controllers;
             _mapper = mapper;
         }
 
+        [HttpGet("GetPetGroupedBySpecies")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+        //Listar todas las mascotas agrupadas por especie.
+        public async Task<ActionResult<SpeciesDto>> GetPetGrouped() 
+        {
+            var species = await _unitOfWork.Species.GetPetBySpecies();
+            return _mapper.Map<SpeciesDto>(species);        
+        
+        }
+
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<IActionResult> Get() 
+        public async Task<ActionResult<SpeciesDto>> Get() 
         {
             var species = await _unitOfWork.Species.GetAllAsync();
-            return Ok(species);        
+            return _mapper.Map<SpeciesDto>(species);        
         }
 
         [HttpGet]

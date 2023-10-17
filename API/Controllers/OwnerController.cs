@@ -19,6 +19,15 @@ namespace API.Controllers;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        [HttpGet("GetAllOwnersAndPets")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<OwnerDto>>> GetAllOwnersPets() 
+        {
+            var owners = await _unitOfWork.People.GetAllOwnersAndPets();
+            return _mapper.Map<List<OwnerDto>>(owners);        
+        }
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]

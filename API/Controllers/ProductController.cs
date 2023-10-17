@@ -20,7 +20,7 @@ namespace API.Controllers;
             _mapper = mapper;
         }
         //Listar los medicamentos que pertenezcan a el laboratorio Genfar
-        [HttpGet("GetByLab{Name}")]
+        [HttpGet("GetByLab/{Name}")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -29,8 +29,16 @@ namespace API.Controllers;
             var products = await _unitOfWork.Products.GetProdByLabAsync(name);
             return _mapper.Map<List<ProductDto>>(products);        
         }
+        //Listar los medicamentos que tenga un precio de venta mayor a 50000
+        [HttpGet("GetGreaterThan/{Price}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        
+        public async Task<ActionResult<IEnumerable<ProductDto>>> GetGreaterThan(double price) 
+        {
+            var products = await _unitOfWork.Products.GetGreaterThan(price);
+            return _mapper.Map<List<ProductDto>>(products);        
+        }
         
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
