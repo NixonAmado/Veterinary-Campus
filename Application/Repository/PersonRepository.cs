@@ -23,7 +23,7 @@ namespace Application.Repository;
                                 .Include(p => p.Especiality)
                                 .ToListAsync();
         }
-        //Listar las mascotas que fueron atendidas por un determinado veterinario.
+        //Listar las mascotas que fueron atendidas por un determinado veterinario.--Ok
         public async Task<IEnumerable<Pet>> PetsAttendedByVet(string veterinarian)
         {
             return await _context.People
@@ -37,21 +37,22 @@ namespace Application.Repository;
         
     /*======================================== Propietario ===========================================================*/
 
-    //Listar los propietarios y sus mascotas.
+    //Listar los propietarios y sus mascotas.--OK
     public async Task<IEnumerable<Person>> GetAllOwnersAndPets ()
     {
         return await _context.People
                             .Where(p => p.PersonType.Description.ToUpper() == "PROPIETARIO")
-                            .Include(p => p.Pets)
+                            .Include(p => p.Pets).ThenInclude(p => p.Breed).ThenInclude(p => p.Species)
                             .ToListAsync();
     }
     /*======================================== Proovedor ===========================================================*/
-    //Listar los proveedores que me venden un determinado medicamento.
-    public async Task<IEnumerable<Person>> GetSuppliersByProduct()
+    //Listar los proveedores que me venden un determinado medicamento.--OK
+    public async Task<IEnumerable<Person>> GetSuppliersByProduct(string product)
     {
         return await _context.People
-                            .Where(p => p.PersonType.Description.ToUpper() == "PROOVEDOR")
-                            
+                            .Where(p => p.PersonType.Description.ToUpper() == "PROOVEDOR" &&
+                            p.ProductsSuppliers.Any(p => p.Product.Name.ToLower() == product.ToLower()))
+                            .SelectMany(p => p.ProductsSuppliers.Select(p => p.Supplier).Distinct())
                             .ToListAsync();
     }
     

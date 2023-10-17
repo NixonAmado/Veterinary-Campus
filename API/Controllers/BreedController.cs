@@ -34,10 +34,10 @@ namespace API.Controllers;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<IEnumerable<BreedListDto>>> GetPetCountInBreed() 
+        public async Task<ActionResult<IEnumerable<CountBreed>>> GetPetCountInBreed() 
         {
             var breedList = await _unitOfWork.Breeds.GetPetCountInBreed();
-            return _mapper.Map<List<BreedListDto>>(breedList);        
+            return _mapper.Map<List<CountBreed>>(breedList);        
         }
 
         [HttpGet]

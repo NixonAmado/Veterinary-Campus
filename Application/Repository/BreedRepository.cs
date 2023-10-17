@@ -15,21 +15,20 @@ namespace Application.Repository;
         }
 
         //Listar la cantidad de mascotas que pertenecen a una raza a una raza. Nota: Se debe mostrar una lista de las razas y la cantidad de mascotas que pertenecen a la raza.        
-        public async Task<IEnumerable<BreedList>> GetPetCountInBreed()
-        {
-            
-            return await _context.Breeds
-                                .Select(p => new BreedList
-                                {
-                                    Breeds = new List<CountBreed>
-                                    {
-                                        new()
+        public async Task<IEnumerable<CountBreed>> GetPetCountInBreed()
+        {            
+            List<CountBreed> breeds = new();
+                                
+            var BreedIteration =  await _context.Breeds
+                                        .Select(p => new CountBreed
                                         {
                                             Name = p.Name,
                                             Pets = p.Pets.Count()  
-                                        }
-                                    }
-                                })
+                                        })
                                 .ToListAsync();
+                breeds.AddRange(BreedIteration);
+
+                return breeds;
+        
         }    
     }

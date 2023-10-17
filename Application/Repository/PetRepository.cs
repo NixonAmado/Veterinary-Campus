@@ -35,7 +35,7 @@ namespace Application.Repository;
                                 )
                             .ToListAsync();
     }
-    //Listar las mascotas y sus propietarios cuya raza sea Golden Retriver
+    //Listar las mascotas y sus propietarios cuya raza sea Golden Retriver --OK
     public async Task<IEnumerable<Pet>> GetOwnerPetByBreed (string breed)
     {
         return await _context.Pets

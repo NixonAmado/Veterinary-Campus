@@ -18,7 +18,19 @@ namespace API.Controllers;
         {
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+        }//Task<IEnumerable<Person>> GetSuppliersByProduct(string product)
+
+        [HttpGet("GetSuppliersByProduct/{Product}")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)] 
+
+        public async Task<ActionResult<IEnumerable<SupplierDto>>> GetSuppliersByProduct(string product) 
+        {
+            var people = await _unitOfWork.People.GetSuppliersByProduct(product);
+            return _mapper.Map<List<SupplierDto>>(people);        
         }
+
+
 
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]

@@ -23,10 +23,10 @@ namespace API.Controllers;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<IEnumerable<OwnerDto>>> GetAllOwnersPets() 
+        public async Task<ActionResult<IEnumerable<OwnerPetDto>>> GetAllOwnersPets() 
         {
             var owners = await _unitOfWork.People.GetAllOwnersAndPets();
-            return _mapper.Map<List<OwnerDto>>(owners);        
+            return _mapper.Map<List<OwnerPetDto>>(owners);        
         }
 
         [HttpGet]

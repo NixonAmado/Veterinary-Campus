@@ -28,7 +28,10 @@ public class MappingProfiles : Profile
 
         CreateMap<Person,SupplierDto>().ReverseMap();
         CreateMap<Person, VeterinarianDto>().ReverseMap();
+        
         CreateMap<Person, OwnerDto>().ReverseMap();        
+        CreateMap<Person, OwnerPetDto>().ReverseMap();        
+        
         CreateMap<Species, SpeciesDto>().ReverseMap();        
         CreateMap<Species, SpeciesNameDto>().ReverseMap();        
         
