@@ -48,7 +48,7 @@ namespace API.Controllers;
 
         public async Task<ActionResult<IEnumerable<VeterinarianDto>>> Get() 
         {
-            var veterinarian = await _unitOfWork.People.GetAllAsync();
+            var veterinarian = await _unitOfWork.People.GetAllVeterinarianAsync();
             return _mapper.Map<List<VeterinarianDto>>(veterinarian);        
         }
 

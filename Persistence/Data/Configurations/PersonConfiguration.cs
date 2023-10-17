@@ -20,7 +20,7 @@ class PersonConfiguration:IEntityTypeConfiguration<Person>
     
         builder.Property(p => p.PhoneNumber)
             .IsRequired()
-            .HasMaxLength(15);
+            .HasMaxLength(20);
     
         builder.HasOne(p => p.PersonType)
             .WithMany(p => p.People)

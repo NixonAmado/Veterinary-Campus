@@ -56,4 +56,25 @@ namespace Application.Repository;
                             .ToListAsync();
     }
     
+
+    //==============================================================================================================}
+    public async Task<IEnumerable<Person>> GetAllOwnersAsync()
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "PROPIETARIO")
+                            .ToListAsync();
+    }
+        public async Task<IEnumerable<Person>> GetAllVeterinarianAsync()
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "VETERINARIO")
+                            .ToListAsync();
+    }
+        public async Task<IEnumerable<Person>> GetAllSuppliersAsync()
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "PROOVEDOR")
+                            .ToListAsync();
+    }
+
     }

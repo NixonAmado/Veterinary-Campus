@@ -38,7 +38,7 @@ namespace API.Controllers;
 
         public async Task<ActionResult<IEnumerable<SupplierDto>>> Get() 
         {
-            var people = await _unitOfWork.People.GetAllAsync();
+            var people = await _unitOfWork.People.GetAllSuppliersAsync();
             return _mapper.Map<List<SupplierDto>>(people);        
         }
 

@@ -7,4 +7,8 @@ public interface IPerson : IGenericRepository<Person>
     Task<IEnumerable<Person>> GetAllOwnersAndPets();
     Task<IEnumerable<Pet>> PetsAttendedByVet(string veterinarian);
     Task<IEnumerable<Person>> GetSuppliersByProduct(string product);
+    Task<IEnumerable<Person>> GetAllOwnersAsync();
+    Task<IEnumerable<Person>> GetAllVeterinarianAsync();
+    Task<IEnumerable<Person>> GetAllSuppliersAsync();
+
 }

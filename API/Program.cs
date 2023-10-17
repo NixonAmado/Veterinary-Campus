@@ -19,17 +19,8 @@ var builder = WebApplication.CreateBuilder(args);
 
 //builder.Logging.ClearProviders();
 //builder.Logging.AddSerilog(logger);
-/*
-el context accessor nos permite que podamos implementar la autorizacion de roles
-*/
-builder.Services.AddHttpContextAccessor();
+
 // Add services to the container.
-builder.Services.AddAuthorization(opts =>{
-    opts.DefaultPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
-        .AddRequirements(new GlobalVerbRoleRequirement())
-        .Build();
-});
 builder.Services.AddControllers(options => 
 {
     options.RespectBrowserAcceptHeader = true;
@@ -52,7 +43,7 @@ builder.Services.AddDbContext<DbAppContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 });
 var app = builder.Build();
-app.UseMiddleware<ExceptionMiddleware>();
+//app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseStatusCodePagesWithReExecute("/errors/{0}");
 
@@ -76,6 +67,7 @@ using(var scope= app.Services.CreateScope()){
 }
 app.UseHttpsRedirection();
 app.UseCors("CorsPolicy"); //- le decimos que use el cors "CorsPolicy"
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseIpRateLimiting();
 app.MapControllers();

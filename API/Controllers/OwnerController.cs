@@ -35,7 +35,7 @@ namespace API.Controllers;
 
         public async Task<ActionResult<IEnumerable<OwnerDto>>> Get() 
         {
-            var owners = await _unitOfWork.People.GetAllAsync();
+            var owners = await _unitOfWork.People.GetAllOwnersAsync();
             return _mapper.Map<List<OwnerDto>>(owners);        
         }
 
