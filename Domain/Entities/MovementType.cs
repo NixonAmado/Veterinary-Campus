@@ -8,6 +8,6 @@ namespace Domain.Entities
     public class MovementType: BaseEntity
     {
         public string Description {get;set;}
-        public ICollection<ProductMovement> ProductMovements {get;set;}
+        public ICollection<MovementDetail> MovementDetails {get;set;}
     }
 }

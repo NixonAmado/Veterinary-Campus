@@ -1,0 +1,6 @@
+Id,IdAppointmentFk,IdProductFk,Dose,AdministrationDate,Observation
+1,5,2,"2 pastillas","2023-04-03 00:00:00","Pal dolor de cabeza"
+2,1,5,"1 geringa 5cm","2023-01-04 00:00:00","Vacunacion anual"
+3,2,3,"geringa 3cm","2023-09-04 00:00:00","vacuna antirabia"
+4,3,1,"geringa 4cm","2023-06-04 00:00:00","se necisitó dormir para admistrarle acetaminofen"
+5,4,4,"2 pastillas de hidrogel","2023-04-03 00:00:00"," para la inmunización activa contra la enfermedad de Newcastle en aves domésticas"

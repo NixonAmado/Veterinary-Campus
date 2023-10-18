@@ -1,0 +1,6 @@
+Id,IdPetFk,Date,Hour,Reason,IdVeterinarianFk
+1,1,"2023-01-03 00:00:00",3,vacunacion,3
+2,2,"2023-09-03 00:00:00",5,vacunacion,4
+3,3,"2023-06-03 00:00:00",3,vacunacion,3
+4,4,"2022-02-03 00:00:00",1,vacunacion,4
+5,2,"2023-04-02 00:00:00",3,"lo atropello una mula",4

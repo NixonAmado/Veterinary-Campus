@@ -18,13 +18,11 @@ namespace Application.Repository;
         {
             return await _context.ProductMovements
                                 .Include(p => p.Product)
-                                .Include(p => p.MovementType)
                                 .Select(p => new ProductMovement
                                 {
                                     Product = p.Product,
                                     Quantity = p.Quantity,
                                     Date = p.Date,
-                                    MovementType = p.MovementType, 
                                     TotalPrice = p.Product.Price * p.Quantity
                                 })
                                 .ToListAsync();

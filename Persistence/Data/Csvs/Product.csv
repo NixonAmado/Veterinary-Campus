@@ -1,0 +1,6 @@
+Id,Name,Stock,Price,IdLaboratoryFk
+1,Dopamina,20,10000.000,1
+2,Acetaminofen,10,1000.000,2
+3,"Antirrábica Mérieux",30,40000.000,3
+4,Newcastle,40,30000.000,2
+5,trivalente,30,20000.000,3

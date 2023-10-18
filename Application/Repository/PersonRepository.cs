@@ -41,7 +41,7 @@ namespace Application.Repository;
     public async Task<IEnumerable<Person>> GetAllOwnersAndPets ()
     {
         return await _context.People
-                            .Where(p => p.PersonType.Description.ToUpper() == "PROPIETARIO")
+                            .Where(p => p.PersonType.Description.ToUpper() == "PROPIETARIO" && p.Pets.Any())
                             .Include(p => p.Pets).ThenInclude(p => p.Breed).ThenInclude(p => p.Species)
                             .ToListAsync();
     }

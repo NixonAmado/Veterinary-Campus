@@ -18,6 +18,10 @@ class MovementDetailConfiguration:IEntityTypeConfiguration<MovementDetail>
                 .IsRequired()
                 .HasColumnType("decimal(10,3)")
                 .HasMaxLength(100);
+        
+        builder.HasOne(p => p.MovementType)
+            .WithMany(p => p.MovementDetails)
+            .HasForeignKey(p => p.IdMovementTypeFk);
 
         builder.HasOne(p => p.Product)
                     .WithMany(p => p.MovementDetails)
