@@ -173,3 +173,5 @@ C:\Users\APT01-65\Documents\Veterinary-Campus\API\obj\Debug\net7.0\refint\API.dl
 C:\Users\APT01-65\Documents\Veterinary-Campus\API\obj\Debug\net7.0\API.pdb
 C:\Users\APT01-65\Documents\Veterinary-Campus\API\obj\Debug\net7.0\API.genruntimeconfig.cache
 C:\Users\APT01-65\Documents\Veterinary-Campus\API\obj\Debug\net7.0\ref\API.dll
+C:\Users\AIO\Documents\c#\SkeletonApp\API\bin\Debug\net7.0\Serilog.dll
+C:\Users\AIO\Documents\c#\SkeletonApp\API\bin\Debug\net7.0\Serilog.Settings.Configuration.dll

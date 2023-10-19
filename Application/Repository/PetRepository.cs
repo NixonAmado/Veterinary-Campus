@@ -13,7 +13,7 @@ namespace Application.Repository;
         {
             _context = context;
         }
-    //Mostrar las mascotas que se encuentren registradas cuya especie sea felina.
+    //Mostrar las mascotas que se encuentren registradas cuya especie sea X.
     public async Task<IEnumerable<Pet>> GetAllBySpecies (string species)
     {
         return await _context.Pets
@@ -22,6 +22,7 @@ namespace Application.Repository;
                             .Include(p => p.Species)
                             .ToListAsync();
     }
+
     //Listar las mascotas que fueron atendidas por motivo de vacunacion en el X trimestre del X --OK
     public async Task<IEnumerable<Pet>> GetAttendedByReasonInTrimesterYear( int trim, int year, string reason)
     {
@@ -33,6 +34,8 @@ namespace Application.Repository;
                                     a.Date.Month >= firstMonthTrim &&
                                     a.Date.Month <= firstMonthTrim + 2)
                                 )
+                            .Include(p => p.Breed)
+                            .Include(p => p.Species)
                             .ToListAsync();
     }
     //Listar las mascotas y sus propietarios cuya raza sea Golden Retriver --OK

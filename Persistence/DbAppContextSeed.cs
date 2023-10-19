@@ -16,7 +16,7 @@ public class DbAppContextSeed
         {
             var ruta = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
 
-              if (!context.PersonTypes.Any())
+            if (!context.PersonTypes.Any())
             {
                 using (var readerPersonTypes = new StreamReader("../Persistence/Data/Csvs/PersonType.csv"))
                 {
