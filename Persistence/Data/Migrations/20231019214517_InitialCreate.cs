@@ -215,7 +215,7 @@ namespace Persistence.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Expires = table.Column<DateTime>(type: "DateTime", nullable: false),
                     Created = table.Column<DateTime>(type: "DateTime", nullable: false),
-                    Revoked = table.Column<DateTime>(type: "DateTime", nullable: false)
+                    Revoked = table.Column<DateTime>(type: "DateTime", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -348,8 +348,7 @@ namespace Persistence.Data.Migrations
                     IdProductFk = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", maxLength: 70, nullable: false),
                     IdMovementTypeFk = table.Column<int>(type: "int", nullable: false),
-                    IdProdMovementFk = table.Column<int>(type: "int", nullable: false),
-                    ProductMovementId = table.Column<int>(type: "int", nullable: true),
+                    IdProductMovementFk = table.Column<int>(type: "int", nullable: false),
                     Price = table.Column<decimal>(type: "decimal(10,3)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
@@ -362,10 +361,11 @@ namespace Persistence.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_MovementDetail_ProductMovement_ProductMovementId",
-                        column: x => x.ProductMovementId,
+                        name: "FK_MovementDetail_ProductMovement_IdProductMovementFk",
+                        column: x => x.IdProductMovementFk,
                         principalTable: "ProductMovement",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_MovementDetail_Product_IdProductFk",
                         column: x => x.IdProductFk,
@@ -474,9 +474,9 @@ namespace Persistence.Data.Migrations
                 column: "IdProductFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovementDetail_ProductMovementId",
+                name: "IX_MovementDetail_IdProductMovementFk",
                 table: "MovementDetail",
-                column: "ProductMovementId");
+                column: "IdProductMovementFk");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Person_IdEspecialityFk",

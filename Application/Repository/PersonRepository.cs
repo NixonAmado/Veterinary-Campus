@@ -79,7 +79,6 @@ namespace Application.Repository;
                             .ToListAsync();
     }
     //======================================================================================================================
-            
     public async Task<(int totalRegistros, IEnumerable<Person> registros)> GetAllPersonAsync(int pageIndex, int pageSize, string search, string person)
         {
             var query = _context.People as IQueryable<Person>;

@@ -31,40 +31,112 @@ Este proyecto se ha desarrollado con Csv, por ende, cuando se haga dotnet run, d
  ### Logica Peticion
 ![Alt text](ImagesReadMe/logicaP1.png)
  ### Peticion Thunder
-Ruta =  /API/Veterinarian/GetByEspeciality/Cirujano vascular
+ ```
+Ruta =  API/Veterinarian/GetByEspeciality/Cirujano vascular
+ ```
 ![Alt text](/ImagesReadMe/Consulta1.png)
 
 ## Listar los medicamentos que pertenezcan al laboratorio X
 ### Logica Peticion
 ![Alt text](ImagesReadMe/logicaP2.png)
  ### Peticion Thunder
-Ruta = /API/Product/GetByLab/Genfar
+ ```
+Ruta = API/Product/GetByLab/Genfar
+```
 ![Alt text](/ImagesReadMe/consulta2.png)
 
 ## Mostrar las mascotas que se encuentren registradas cuya especie sea X.
 ### Logica Peticion
 ![Alt text](ImagesReadMe/logicaP3.png)
  ### Peticion Thunder
-Ruta = /API/Pet/GetOwnerPetByBreed/golden retriver
+```
+Ruta = API/Pet/GetOwnerPetByBreed/golden retriver
+```
 ![Alt text](/ImagesReadMe/consulta3.png)
 
 ## Listar los propietarios y sus mascotas.
 ### Logica Peticion
 ![Alt text](ImagesReadMe/logicaP4.png)
  ### Peticion Thunder
-Ruta = /API/Owner/GetAllOwnersAndPets
+```
+Ruta = API/Owner/GetAllOwnersAndPets
+```
 ![Alt text](/ImagesReadMe/consulta4.png)
 
 ## Listar los medicamentos que tenga un precio de venta mayor a X
 ### Logica Peticion
 ![Alt text](ImagesReadMe/logicaP5.png)
  ### Peticion Thunder
-Ruta = /API/Product/GetGreaterThan/50000
+```
+Ruta = API/Product/GetGreaterThan/50000
+```
 ![Alt text](/ImagesReadMe/consulta5.png)
 
 ## Listar las mascotas que fueron atendidas por motivo de X en el X trimestre del 2023/X
-### Logica Peticion
+### Logica Peticion  
 ![Alt text](ImagesReadMe/logicaP6.png)
  ### Peticion Thunder
-Ruta = /API/Pet/GetByReasonInTrimYear/3/2023/vacunacion
+```
+Ruta = API/Pet/GetByReasonInTrimYear/3/2023/vacunacion
+```
 ![Alt text](/ImagesReadMe/consulta6.png)
+## Grupo B
+## Listar todas las mascotas agrupadas por especie.
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP7.png)
+ ### Peticion Thunder
+```
+Ruta = API/Species/GetPetGroupedBySpecies
+```
+![Alt text](/ImagesReadMe/consulta7.png)
+
+## Listar todos los movimientos de medicamentos y el valor total de cada movimiento.
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP8.png)
+ ### Peticion Thunder
+```
+Ruta = API/ProductMovement/GetProductMovementAndVal
+```
+![Alt text](/ImagesReadMe/consulta8.png)
+
+## Listar las mascotas que fueron atendidas por un determinado veterinario.
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP9.png)
+ ### Peticion Thunder
+```
+Ruta = API/Veterinarian/PetsAttendedByVet/Carlos
+```
+![Alt text](/ImagesReadMe/consulta9.png)
+
+## Listar los proveedores que me venden un determinado medicamento.
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP10.png)
+ ### Peticion Thunder
+```
+Ruta = API/Supplier/GetSuppliersByProduct/Dopamina
+```
+![Alt text](/ImagesReadMe/consulta10.png)
+## Listar las mascotas y sus propietarios cuya raza sea X
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP11.png)
+ ### Peticion Thunder
+```
+Ruta = API/Pet/GetOwnerPetByBreed/Golden retriver
+```
+![Alt text](/ImagesReadMe/consulta11.png)
+
+## Listar la cantidad de mascotas que pertenecen a una raza a una raza. Nota: Se debe mostrar una lista de las razas y la cantidad de mascotas que pertenecen a la raza.
+### Logica Peticion  
+![Alt text](ImagesReadMe/logicaP12.png)
+ ### Peticion Thunder
+```
+Ruta = API/Breed/GetPetCountInBreed
+```
+![Alt text](/ImagesReadMe/consulta12.png)
+
+```
+```
+Para el crud exceptuando los get no  usan Dto, se basen en la entidad original, aunque el el swagger se muestre algo así
+![Alt text](/ImagesReadMe/explicacionBasica.png)
+en realidad solo hay que pasarle los atributos y la foranea como esto:
+![Alt text](/ImagesReadMe/demostracion.png)

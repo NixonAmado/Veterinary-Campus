@@ -27,5 +27,9 @@ class MovementDetailConfiguration:IEntityTypeConfiguration<MovementDetail>
                     .WithMany(p => p.MovementDetails)
                     .HasForeignKey(p => p.IdProductFk);
         
+        builder.HasOne(p => p.ProductMovement)
+                    .WithMany(p => p.MovementDetails)
+                    .HasForeignKey(p => p.IdProductMovementFk);
+                
     }
 }

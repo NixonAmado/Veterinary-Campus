@@ -22,14 +22,13 @@ namespace API.Controllers;
         }
 
         [HttpGet("GetPetGroupedBySpecies")]
-        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
         //Listar todas las mascotas agrupadas por especie.
-        public async Task<ActionResult<SpeciesDto>> GetPetGrouped() 
+        public async Task<ActionResult<IEnumerable<SpeciesDto>>> GetPetGrouped() 
         {
             var species = await _unitOfWork.Species.GetPetBySpecies();
-            return _mapper.Map<SpeciesDto>(species);        
+            return _mapper.Map<List<SpeciesDto>>(species);        
         
         }
 
@@ -38,10 +37,10 @@ namespace API.Controllers;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<SpeciesNameDto>> Get() 
+        public async Task<ActionResult<IEnumerable<SpeciesNameDto>>> Get() 
         {
             var species = await _unitOfWork.Species.GetAllAsync();
-            return _mapper.Map<SpeciesNameDto>(species);        
+            return _mapper.Map<List<SpeciesNameDto>>(species);        
         }
 
         [HttpGet]

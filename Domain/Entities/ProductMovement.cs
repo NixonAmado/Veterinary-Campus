@@ -12,6 +12,6 @@ namespace Domain.Entities
         public double TotalPrice {get;set;}
         public int Quantity {get;set;}
         public DateTime Date{get;set;}
-        public ICollection<MovementDetail> MovenmentDetails {get;set;}
+        public ICollection<MovementDetail> MovementDetails {get;set;}
     }
 }

@@ -13,7 +13,18 @@ namespace Application.Repository;
         {
             _context = context;
         }
-
+        public override async Task<Laboratory> GetByIdAsync(int id)
+        {
+            return await _context.Laboratories
+                                .Include(p => p.Products)
+                                .FirstOrDefaultAsync();
+        }
+        public override async Task<IEnumerable<Laboratory>> GetAllAsync()
+        {
+            return await _context.Laboratories
+                                .Include(p => p.Products)
+                                .ToListAsync();
+        }
     
     public override async Task<(int totalRegistros, IEnumerable<Laboratory> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
     {
@@ -25,6 +36,7 @@ namespace Application.Repository;
         query = query.OrderBy(p => p.Id);
         var totalRegistros = await query.CountAsync();
         var registros = await query
+        .Include(p => p.Products)
             .Skip((pageIndex - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();

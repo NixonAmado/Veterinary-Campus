@@ -27,6 +27,12 @@ namespace Application.Repository;
                                 })
                                 .ToListAsync();
         }
+        public override async Task<ProductMovement> GetByIdAsync(int id)
+        {
+            return await _context.ProductMovements
+                                .Include(p => p.Product)
+                                .FirstOrDefaultAsync();
+        }
         public override async Task<IEnumerable<ProductMovement>> GetAllAsync()
         {
             return await _context.ProductMovements

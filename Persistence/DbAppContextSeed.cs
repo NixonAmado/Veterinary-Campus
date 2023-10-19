@@ -256,36 +256,7 @@ public class DbAppContextSeed
                     }
                 }
             }
-            if (!context.MovementDetails.Any())
-            {
-                using (var reader = new StreamReader("../Persistence/Data/Csvs/MovementDetail.csv"))
-                {
-                    using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
-                    {
-                        HeaderValidated = null, // Esto deshabilita la validación de encabezados
-                        MissingFieldFound = null
-                    }))
-                    {
-                        // Resto de tu código para leer y procesar el archivo CSV
-                        var list = csv.GetRecords<MovementDetail>();
-                        List<MovementDetail> entidad = new List<MovementDetail>();
-                        foreach (var item in list)
-                        {
-                            entidad.Add(new MovementDetail
-                            {
-                                Id = item.Id,
-                                IdMovementTypeFk = item.IdMovementTypeFk,
-                                IdProductFk = item.IdProductFk,
-                                Quantity = item.Quantity,
-                                Price = item.Price
-                            });
-                        }
-                        context.MovementDetails.AddRange(entidad);
-                        await context.SaveChangesAsync();
-                    }
-                }
-            }                        
-            if (!context.ProductMovements.Any())
+                        if (!context.ProductMovements.Any())
             {
                 using (var reader = new StreamReader("../Persistence/Data/Csvs/ProductMovement.csv"))
                 {
@@ -313,7 +284,38 @@ public class DbAppContextSeed
                         await context.SaveChangesAsync();
                     }
                 }
-            }                                    
+            }   
+            if (!context.MovementDetails.Any())
+            {
+                using (var reader = new StreamReader("../Persistence/Data/Csvs/MovementDetail.csv"))
+                {
+                    using (var csv = new CsvReader(reader, new CsvConfiguration(CultureInfo.InvariantCulture)
+                    {
+                        HeaderValidated = null, // Esto deshabilita la validación de encabezados
+                        MissingFieldFound = null
+                    }))
+                    {
+                        // Resto de tu código para leer y procesar el archivo CSV
+                        var list = csv.GetRecords<MovementDetail>();
+                        List<MovementDetail> entidad = new List<MovementDetail>();
+                        foreach (var item in list)
+                        {
+                            entidad.Add(new MovementDetail
+                            {
+                                Id = item.Id,
+                                IdMovementTypeFk = item.IdMovementTypeFk,
+                                IdProductFk = item.IdProductFk,
+                                IdProductMovementFk = item.IdProductMovementFk,
+                                Quantity = item.Quantity,
+                                Price = item.Price
+                            });
+                        }
+                        context.MovementDetails.AddRange(entidad);
+                        await context.SaveChangesAsync();
+                    }
+                }
+            }                        
+                                 
             if (!context.ProductSuppliers.Any())
             {
                 using (var reader = new StreamReader("../Persistence/Data/Csvs/ProductSupplier.csv"))

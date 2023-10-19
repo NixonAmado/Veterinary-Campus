@@ -13,6 +13,12 @@ namespace Application.Repository;
         {
             _context = context;
         }
+        public override async Task<MovementDetail> GetByIdAsync(int id)
+        {
+            return await _context.MovementDetails
+                                .Include(p => p.Product)
+                                .FirstOrDefaultAsync();
+        }
         public override async Task<IEnumerable<MovementDetail>> GetAllAsync()
         {
             return await _context.MovementDetails

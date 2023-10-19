@@ -13,6 +13,16 @@ namespace Application.Repository;
         {
             _context = context;
         }
+        public override async Task<Appointment> GetByIdAsync(int id )
+        {
+            return await _context.Appointments
+                                .Include(p => p.Pet)
+                                .ThenInclude(p => p.Species)
+                                .ThenInclude(p => p.Breeds)
+                                .Include(p => p.Veterinarian)
+                                .ThenInclude(p => p.Especiality)
+                                .FirstOrDefaultAsync();
+        }
         public override async Task<IEnumerable<Appointment>> GetAllAsync()
         {
             return await _context.Appointments

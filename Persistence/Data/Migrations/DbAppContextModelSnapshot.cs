@@ -157,18 +157,15 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("IdMovementTypeFk")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdProdMovementFk")
+                    b.Property<int>("IdProductFk")
                         .HasColumnType("int");
 
-                    b.Property<int>("IdProductFk")
+                    b.Property<int>("IdProductMovementFk")
                         .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasMaxLength(100)
                         .HasColumnType("decimal(10,3)");
-
-                    b.Property<int?>("ProductMovementId")
-                        .HasColumnType("int");
 
                     b.Property<int>("Quantity")
                         .HasMaxLength(70)
@@ -180,7 +177,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("IdProductFk");
 
-                    b.HasIndex("ProductMovementId");
+                    b.HasIndex("IdProductMovementFk");
 
                     b.ToTable("MovementDetail", (string)null);
                 });
@@ -370,7 +367,7 @@ namespace Persistence.Data.Migrations
                     b.Property<int>("IdUserFk")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("Revoked")
+                    b.Property<DateTime?>("Revoked")
                         .HasColumnType("DateTime");
 
                     b.Property<string>("Token")
@@ -525,8 +522,10 @@ namespace Persistence.Data.Migrations
                         .IsRequired();
 
                     b.HasOne("Domain.Entities.ProductMovement", "ProductMovement")
-                        .WithMany("MovenmentDetails")
-                        .HasForeignKey("ProductMovementId");
+                        .WithMany("MovementDetails")
+                        .HasForeignKey("IdProductMovementFk")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
                     b.Navigation("MovementType");
 
@@ -707,7 +706,7 @@ namespace Persistence.Data.Migrations
 
             modelBuilder.Entity("Domain.Entities.ProductMovement", b =>
                 {
-                    b.Navigation("MovenmentDetails");
+                    b.Navigation("MovementDetails");
                 });
 
             modelBuilder.Entity("Domain.Entities.Role", b =>

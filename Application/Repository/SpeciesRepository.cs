@@ -18,14 +18,8 @@ namespace Application.Repository;
         {
             return await _context.Species
                         .Include(p => p.Pets)
+                        .ThenInclude(p => p.Breed)
                         .ToListAsync();
-        //     await _context.Pets
-        //             .Select(group => new Species
-        //             {
-        //                 Name = group.FirstOrDefault().Species.Name,
-        //                 Pets = group.ToList(),
-        //             })
-        //             .ToListAsync();
         }
         public override async Task<(int totalRegistros, IEnumerable<Species> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
         {
@@ -37,6 +31,8 @@ namespace Application.Repository;
             query = query.OrderBy(p => p.Id);
             var totalRegistros = await query.CountAsync();
             var registros = await query
+                .Include(p => p.Pets)
+                .ThenInclude(p => p.Breed)
                 .Skip((pageIndex - 1) * pageSize)
                 .Take(pageSize)
                 .ToListAsync();

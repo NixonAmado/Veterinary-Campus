@@ -28,8 +28,13 @@ namespace Application.Repository;
                                 .ToListAsync();
         }
 
-
-        public override async Task<IEnumerable<Product>> GetAllAsync()
+    public override async Task<Product> GetByIdAsync(int id)
+    {
+        return await _context.Products
+                            .Include(p => p.Laboratory)
+                            .FirstOrDefaultAsync();
+    }
+    public override async Task<IEnumerable<Product>> GetAllAsync()
     {
         return await _context.Products
                             .Include(p => p.Laboratory)

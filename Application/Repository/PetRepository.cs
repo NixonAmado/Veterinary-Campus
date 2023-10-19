@@ -48,6 +48,14 @@ namespace Application.Repository;
                             .Include(p => p.Owner)
                             .ToListAsync();
     }
+    public override async Task<Pet> GetByIdAsync(int id)
+    {
+        return await _context.Pets
+                            .Include(p => p.Owner)
+                            .Include(p => p.Species)
+                            .Include(p => p.Breed)
+                            .FirstOrDefaultAsync();
+    }
     public override async Task<IEnumerable<Pet>> GetAllAsync()
     {
         return await _context.Pets
