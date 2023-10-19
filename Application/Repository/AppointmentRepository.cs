@@ -23,5 +23,28 @@ namespace Application.Repository;
                                 .ThenInclude(p => p.Especiality)
                                 .ToListAsync();
         }
-        
+        public override async Task<(int totalRegistros, IEnumerable<Appointment> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
+        {
+            var query = _context.Appointments as IQueryable<Appointment>;
+
+            if(!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(p => p.Pet.Name.ToUpper() == search.ToUpper());
+            }
+
+            query = query.OrderBy(p => p.Id);
+            var totalRegistros = await query.CountAsync();
+            var registros = await query
+                .Include(p => p.Pet)
+                .ThenInclude(p => p.Species)
+                .ThenInclude(p => p.Breeds)
+                .Include(p => p.Veterinarian)
+                .ThenInclude(p => p.Especiality)
+
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (totalRegistros, registros);
+        }
     }

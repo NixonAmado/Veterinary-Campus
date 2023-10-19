@@ -60,4 +60,14 @@ public class GenericRepository<T> : IGenericRepository<T> where T : BaseEntity
             .ToListAsync();
         return (totalRegistros, registros);
     }
+
+    public virtual async Task<(int totalRegistros, IEnumerable<Person> registros)> GetAllPeopleAsync(int pageIndex, int pageSize, string search, string person)
+    {
+        var totalRegistros = await _context.Set<Person>().CountAsync();
+        var registros = await _context.Set<Person>().Where(p => p.PersonType.Description.ToUpper() == person.ToUpper())
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return (totalRegistros, registros);
+    }
 }

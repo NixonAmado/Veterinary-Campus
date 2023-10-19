@@ -26,7 +26,7 @@ public class DbAppContext: DbContext
     public DbSet<Pet> Pets {get;set;}
     public DbSet<Product> Products {get;set;}
     public DbSet<ProductMovement> ProductMovements {get;set;}
-    public DbSet<ProductSupplier> ProductsSuppliers {get;set;}
+    public DbSet<ProductSupplier> ProductSuppliers {get;set;}
     public DbSet<RefreshToken> RefreshTokens {get;set;}
     public DbSet<Species> Species {get;set;}
     protected override void OnModelCreating(ModelBuilder modelBuilder)

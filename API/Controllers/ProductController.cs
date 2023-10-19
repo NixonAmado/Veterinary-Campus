@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +22,7 @@ namespace API.Controllers;
         }
         //Listar los medicamentos que pertenezcan a el laboratorio Genfar
         [HttpGet("GetByLab/{Name}")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -31,6 +33,7 @@ namespace API.Controllers;
         }
         //Listar los medicamentos que tenga un precio de venta mayor a 50000
         [HttpGet("GetGreaterThan/{Price}")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -41,6 +44,7 @@ namespace API.Controllers;
         }
         
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -53,6 +57,7 @@ namespace API.Controllers;
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<ProductDto>>> Get11([FromQuery] Params ProductParams )
@@ -63,6 +68,7 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -74,6 +80,7 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Product>> Post(Product Product)
@@ -88,6 +95,7 @@ namespace API.Controllers;
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<Product>> Put(int id, [FromBody] Product Product)
@@ -103,6 +111,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)

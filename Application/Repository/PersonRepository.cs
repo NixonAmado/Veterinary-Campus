@@ -34,6 +34,8 @@ namespace Application.Repository;
                                 .Include(p => p.Species)
                                 .ToListAsync();
         }
+
+            
         
     /*======================================== Propietario ===========================================================*/
 
@@ -76,5 +78,24 @@ namespace Application.Repository;
                             .Where(p => p.PersonType.Description.ToLower() == "PROOVEDOR")
                             .ToListAsync();
     }
+    //======================================================================================================================
+            
+    public async Task<(int totalRegistros, IEnumerable<Person> registros)> GetAllPersonAsync(int pageIndex, int pageSize, string search, string person)
+        {
+            var query = _context.People as IQueryable<Person>;
+
+            if(!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(p => p.Name.ToUpper() == search.ToUpper());
+            }
+            query = query.OrderBy(p => p.Id);
+            var totalRegistros = await query.CountAsync();
+            var registros = await query
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (totalRegistros, registros);
+        }
 
     }

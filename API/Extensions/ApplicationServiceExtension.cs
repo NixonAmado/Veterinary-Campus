@@ -51,6 +51,7 @@ public static class ApplicationServiceExtension
 
             });
         }
+        
         public static void ConfigureApiVersioning(this IServiceCollection services)
         {
             services.AddApiVersioning(options =>

@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -19,7 +20,9 @@ namespace API.Controllers;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+        
         [HttpGet("GetAllOwnersAndPets")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -30,6 +33,7 @@ namespace API.Controllers;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -42,16 +46,18 @@ namespace API.Controllers;
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<OwnerDto>>> Get11([FromQuery] Params OwnerParams )
         {
-            var owners = await _unitOfWork.People.GetAllAsync(OwnerParams.PageIndex,OwnerParams.PageSize,OwnerParams.Search);
+            var owners = await _unitOfWork.People.GetAllPeopleAsync(OwnerParams.PageIndex,OwnerParams.PageSize,OwnerParams.Search,"propietario");
             var lstOwnerDto = _mapper.Map<List<OwnerDto>>(owners.registros);
             return new Pager<OwnerDto>(lstOwnerDto,owners.totalRegistros,OwnerParams.PageIndex,OwnerParams.PageSize,OwnerParams.Search);
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -63,6 +69,7 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Person>> Post(OwnerDto OwnerDto)
@@ -79,6 +86,7 @@ namespace API.Controllers;
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<Person>> Put(int id, [FromBody] Person Owner)
@@ -94,6 +102,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)

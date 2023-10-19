@@ -27,4 +27,26 @@ namespace Application.Repository;
                                 })
                                 .ToListAsync();
         }
+        public override async Task<IEnumerable<ProductMovement>> GetAllAsync()
+        {
+            return await _context.ProductMovements
+                                .Include(p => p.Product)
+                                .ToListAsync();
+        }
+        public override async Task<(int totalRegistros, IEnumerable<ProductMovement> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
+        {
+            var query = _context.ProductMovements as IQueryable<ProductMovement>;
+            if(!string.IsNullOrEmpty(search))
+            {
+                query = query.Where(p => p.Id.ToString() == search);
+            }
+            query = query.OrderBy(p => p.Id);
+            var totalRegistros = await query.CountAsync();
+            var registros = await query
+                .Include(p => p.Product)                
+                .Skip((pageIndex - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+            return (totalRegistros, registros);
+        }
     }

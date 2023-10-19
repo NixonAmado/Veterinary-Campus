@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +22,7 @@ namespace API.Controllers;
         }
 
         [HttpGet("GetPetGroupedBySpecies")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
         //Listar todas las mascotas agrupadas por especie.
@@ -32,27 +34,30 @@ namespace API.Controllers;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<SpeciesDto>> Get() 
+        public async Task<ActionResult<SpeciesNameDto>> Get() 
         {
             var species = await _unitOfWork.Species.GetAllAsync();
-            return _mapper.Map<SpeciesDto>(species);        
+            return _mapper.Map<SpeciesNameDto>(species);        
         }
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Pager<SpeciesDto>>> Get11([FromQuery] Params SpeciesParams )
+        public async Task<ActionResult<Pager<SpeciesNameDto>>> Get11([FromQuery] Params SpeciesParams )
         {
             var species = await _unitOfWork.Species.GetAllAsync(SpeciesParams.PageIndex,SpeciesParams.PageSize,SpeciesParams.Search);
-            var lstSpeciesDto = _mapper.Map<List<SpeciesDto>>(species.registros);
-            return new Pager<SpeciesDto>(lstSpeciesDto,species.totalRegistros,SpeciesParams.PageIndex,SpeciesParams.PageSize,SpeciesParams.Search);
+            var lstSpeciesDto = _mapper.Map<List<SpeciesNameDto>>(species.registros);
+            return new Pager<SpeciesNameDto>(lstSpeciesDto,species.totalRegistros,SpeciesParams.PageIndex,SpeciesParams.PageSize,SpeciesParams.Search);
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -64,22 +69,24 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Species>> Post(SpeciesDto SpeciesDto)
+        public async Task<ActionResult<Species>> Post(Species Species)
         {
-            var species = _mapper.Map<Species>(SpeciesDto);
+            var species = _mapper.Map<Species>(Species);
             _unitOfWork.Species.Add(species);
             await _unitOfWork.SaveAsync();
-            if (SpeciesDto == null)
+            if (Species == null)
             {
                 return BadRequest();
             }
-            SpeciesDto.Id = species.Id;
-            return CreatedAtAction(nameof(Post), new { id = SpeciesDto.Id }, SpeciesDto);
+            Species.Id = species.Id;
+            return CreatedAtAction(nameof(Post), new { id = Species.Id }, Species);
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<SpeciesDto>> Put(int id, [FromBody] SpeciesDto SpeciesDto)
@@ -96,6 +103,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)

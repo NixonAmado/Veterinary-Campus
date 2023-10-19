@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -24,13 +25,14 @@ namespace API.Controllers;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<IActionResult> Get() 
+        public async Task<IEnumerable<BreedDto>> Get() 
         {
             var breeds = await _unitOfWork.Breeds.GetAllAsync();
-            return Ok(breeds);        
+            return _mapper.Map<List<BreedDto>>(breeds);        
         }
 
         [HttpGet("GetPetCountInBreed")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -42,16 +44,18 @@ namespace API.Controllers;
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<BreedDto>>> Get11([FromQuery] Params BreedParams )
         {
-            var breed = await _unitOfWork.Appointments.GetAllAsync(BreedParams.PageIndex,BreedParams.PageSize,BreedParams.Search);
+            var breed = await _unitOfWork.Breeds.GetAllAsync(BreedParams.PageIndex,BreedParams.PageSize,BreedParams.Search);
             var lstBreedDto = _mapper.Map<List<BreedDto>>(breed.registros);
             return new Pager<BreedDto>(lstBreedDto,breed.totalRegistros,BreedParams.PageIndex,BreedParams.PageSize,BreedParams.Search);
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -63,22 +67,23 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<ActionResult<Breed>> Post(BreedDto BreedDto)
+        public async Task<ActionResult<Breed>> Post(Breed Breed)
         {
-            var breed = _mapper.Map<Breed>(BreedDto);
+            var breed = _mapper.Map<Breed>(Breed);
             _unitOfWork.Breeds.Add(breed);
             await _unitOfWork.SaveAsync();
-            if (BreedDto == null)
+            if (Breed == null)
             {
                 return BadRequest();
             }
-            BreedDto.Id = breed.Id;
-            return CreatedAtAction(nameof(Post), new { id = BreedDto.Id }, BreedDto);
+            return CreatedAtAction(nameof(Post), new { id = Breed.Id }, Breed);
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<BreedDto>> Put(int id, [FromBody] BreedDto BreedDto)
@@ -95,6 +100,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)

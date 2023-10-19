@@ -1,10 +1,10 @@
 using System.Reflection;
 using API.Extensions;
 using API.Helpers;
-using API.Helpers.Errors;
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistencia.Data;
 using Serilog;
 var builder = WebApplication.CreateBuilder(args);
@@ -59,6 +59,8 @@ using(var scope= app.Services.CreateScope()){
     try{
     var context = services.GetRequiredService<DbAppContext>();
     await context.Database.MigrateAsync();
+    await DbAppContextSeed.SeedRolesAsync(context,loggerFactory);
+		await DbAppContextSeed.SeedAsync(context,loggerFactory);
     }
     catch(Exception ex){
     var logger = loggerFactory.CreateLogger<Program>();

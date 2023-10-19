@@ -7,6 +7,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -26,6 +27,7 @@ namespace API.Controllers;
 
         //Listar todos los movimientos de medicamentos y el valor total de cada movimiento.
         [HttpGet("GetProductMovementAndVal")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -36,6 +38,7 @@ namespace API.Controllers;
         }
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -48,6 +51,7 @@ namespace API.Controllers;
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<ProductMovementDto>>> Get11([FromQuery] Params ProductMovementParams )
@@ -58,6 +62,7 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -69,6 +74,7 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<ProductMovement>> Post(ProductMovement ProductMovement)
@@ -83,6 +89,7 @@ namespace API.Controllers;
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<ProductMovement>> Put(int id, [FromBody] ProductMovement ProductMovement)
@@ -98,6 +105,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)

@@ -167,7 +167,7 @@ namespace Persistence.Data.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("decimal(10,3)");
 
-                    b.Property<int?>("ProductMovementsId")
+                    b.Property<int?>("ProductMovementId")
                         .HasColumnType("int");
 
                     b.Property<int>("Quantity")
@@ -180,7 +180,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("IdProductFk");
 
-                    b.HasIndex("ProductMovementsId");
+                    b.HasIndex("ProductMovementId");
 
                     b.ToTable("MovementDetail", (string)null);
                 });
@@ -352,7 +352,7 @@ namespace Persistence.Data.Migrations
 
                     b.HasIndex("IdProductFk");
 
-                    b.ToTable("ProductSupplier");
+                    b.ToTable("ProductSuppliers");
                 });
 
             modelBuilder.Entity("Domain.Entities.RefreshToken", b =>
@@ -524,15 +524,15 @@ namespace Persistence.Data.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Domain.Entities.ProductMovement", "ProductMovements")
+                    b.HasOne("Domain.Entities.ProductMovement", "ProductMovement")
                         .WithMany("MovenmentDetails")
-                        .HasForeignKey("ProductMovementsId");
+                        .HasForeignKey("ProductMovementId");
 
                     b.Navigation("MovementType");
 
                     b.Navigation("Product");
 
-                    b.Navigation("ProductMovements");
+                    b.Navigation("ProductMovement");
                 });
 
             modelBuilder.Entity("Domain.Entities.Person", b =>

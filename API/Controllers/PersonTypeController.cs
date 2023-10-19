@@ -1,17 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using API.Dtos;
 using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
     [ApiVersion("1.0")]
     [ApiVersion("1.1")]
+    [Authorize(Roles = "Administrador,Empleado")]
 
     public class PersonTypeController : BaseApiController
     {

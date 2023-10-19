@@ -7,74 +7,13 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Persistence.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate02 : Migration
+    public partial class InitialCreate : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_RefreshToken_User_userId",
-                table: "RefreshToken");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_UsersRoles_Role_IdRolFk",
-                table: "UsersRoles");
-
-            migrationBuilder.DropIndex(
-                name: "IX_RefreshToken_userId",
-                table: "RefreshToken");
-
-            migrationBuilder.DropColumn(
-                name: "userId",
-                table: "RefreshToken");
-
-            migrationBuilder.RenameColumn(
-                name: "IdRolFk",
-                table: "UsersRoles",
-                newName: "IdRoleFk");
-
-            migrationBuilder.UpdateData(
-                table: "RefreshToken",
-                keyColumn: "Token",
-                keyValue: null,
-                column: "Token",
-                value: "");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Token",
-                table: "RefreshToken",
-                type: "varchar(300)",
-                maxLength: 300,
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "longtext",
-                oldNullable: true)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Revoked",
-                table: "RefreshToken",
-                type: "DateTime",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime(6)");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Expires",
-                table: "RefreshToken",
-                type: "DateTime",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime(6)");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Created",
-                table: "RefreshToken",
-                type: "DateTime",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "datetime(6)");
+            migrationBuilder.AlterDatabase()
+                .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
                 name: "Especiality",
@@ -140,6 +79,21 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "Role",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Role", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "Species",
                 columns: table => new
                 {
@@ -151,6 +105,25 @@ namespace Persistence.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Species", x => x.Id);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "User",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    user_name = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    email = table.Column<string>(type: "varchar(40)", maxLength: 40, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    password = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_User", x => x.Id);
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
@@ -188,7 +161,7 @@ namespace Persistence.Data.Migrations
                         .Annotation("MySql:CharSet", "utf8mb4"),
                     Email = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
                         .Annotation("MySql:CharSet", "utf8mb4"),
-                    PhoneNumber = table.Column<int>(type: "int", maxLength: 10, nullable: false),
+                    PhoneNumber = table.Column<int>(type: "int", maxLength: 20, nullable: false),
                     IdPersonTypeFk = table.Column<int>(type: "int", nullable: false),
                     IdEspecialityFk = table.Column<int>(type: "int", nullable: true)
                 },
@@ -232,36 +205,80 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "RefreshToken",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                    IdUserFk = table.Column<int>(type: "int", nullable: false),
+                    Token = table.Column<string>(type: "varchar(300)", maxLength: 300, nullable: false)
+                        .Annotation("MySql:CharSet", "utf8mb4"),
+                    Expires = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    Created = table.Column<DateTime>(type: "DateTime", nullable: false),
+                    Revoked = table.Column<DateTime>(type: "DateTime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RefreshToken", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RefreshToken_User_IdUserFk",
+                        column: x => x.IdUserFk,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "UsersRoles",
+                columns: table => new
+                {
+                    IdUserFk = table.Column<int>(type: "int", nullable: false),
+                    IdRoleFk = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UsersRoles", x => new { x.IdRoleFk, x.IdUserFk });
+                    table.ForeignKey(
+                        name: "FK_UsersRoles_Role_IdRoleFk",
+                        column: x => x.IdRoleFk,
+                        principalTable: "Role",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UsersRoles_User_IdUserFk",
+                        column: x => x.IdUserFk,
+                        principalTable: "User",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySql:CharSet", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "ProductMovement",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdProductFk = table.Column<int>(type: "int", nullable: false),
+                    TotalPrice = table.Column<decimal>(type: "decimal(20,3)", nullable: false),
                     Quantity = table.Column<int>(type: "int", maxLength: 10, nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime", nullable: false),
-                    IdMovementTypeFk = table.Column<int>(type: "int", nullable: false),
-                    ProductId = table.Column<int>(type: "int", nullable: true)
+                    Date = table.Column<DateTime>(type: "datetime", nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ProductMovement", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_ProductMovement_MovementType_IdMovementTypeFk",
-                        column: x => x.IdMovementTypeFk,
-                        principalTable: "MovementType",
+                        name: "FK_ProductMovement_Product_IdProductFk",
+                        column: x => x.IdProductFk,
+                        principalTable: "Product",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_ProductMovement_Product_ProductId",
-                        column: x => x.ProductId,
-                        principalTable: "Product",
-                        principalColumn: "Id");
                 })
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "ProductSupplier",
+                name: "ProductSuppliers",
                 columns: table => new
                 {
                     IdSupplierFk = table.Column<int>(type: "int", nullable: false),
@@ -269,15 +286,15 @@ namespace Persistence.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProductSupplier", x => new { x.IdSupplierFk, x.IdProductFk });
+                    table.PrimaryKey("PK_ProductSuppliers", x => new { x.IdSupplierFk, x.IdProductFk });
                     table.ForeignKey(
-                        name: "FK_ProductSupplier_Person_IdSupplierFk",
+                        name: "FK_ProductSuppliers_Person_IdSupplierFk",
                         column: x => x.IdSupplierFk,
                         principalTable: "Person",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProductSupplier_Product_IdProductFk",
+                        name: "FK_ProductSuppliers_Product_IdProductFk",
                         column: x => x.IdProductFk,
                         principalTable: "Product",
                         principalColumn: "Id",
@@ -330,16 +347,23 @@ namespace Persistence.Data.Migrations
                         .Annotation("MySql:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     IdProductFk = table.Column<int>(type: "int", nullable: false),
                     Quantity = table.Column<int>(type: "int", maxLength: 70, nullable: false),
+                    IdMovementTypeFk = table.Column<int>(type: "int", nullable: false),
                     IdProdMovementFk = table.Column<int>(type: "int", nullable: false),
-                    ProductMovementsId = table.Column<int>(type: "int", nullable: true),
+                    ProductMovementId = table.Column<int>(type: "int", nullable: true),
                     Price = table.Column<decimal>(type: "decimal(10,3)", maxLength: 100, nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_MovementDetail", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_MovementDetail_ProductMovement_ProductMovementsId",
-                        column: x => x.ProductMovementsId,
+                        name: "FK_MovementDetail_MovementType_IdMovementTypeFk",
+                        column: x => x.IdMovementTypeFk,
+                        principalTable: "MovementType",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_MovementDetail_ProductMovement_ProductMovementId",
+                        column: x => x.ProductMovementId,
                         principalTable: "ProductMovement",
                         principalColumn: "Id");
                     table.ForeignKey(
@@ -415,11 +439,6 @@ namespace Persistence.Data.Migrations
                 .Annotation("MySql:CharSet", "utf8mb4");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_IdUserFk",
-                table: "RefreshToken",
-                column: "IdUserFk");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Appointment_IdPetFk",
                 table: "Appointment",
                 column: "IdPetFk");
@@ -445,14 +464,19 @@ namespace Persistence.Data.Migrations
                 column: "IdProductFk");
 
             migrationBuilder.CreateIndex(
+                name: "IX_MovementDetail_IdMovementTypeFk",
+                table: "MovementDetail",
+                column: "IdMovementTypeFk");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_MovementDetail_IdProductFk",
                 table: "MovementDetail",
                 column: "IdProductFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_MovementDetail_ProductMovementsId",
+                name: "IX_MovementDetail_ProductMovementId",
                 table: "MovementDetail",
-                column: "ProductMovementsId");
+                column: "ProductMovementId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Person_IdEspecialityFk",
@@ -485,48 +509,29 @@ namespace Persistence.Data.Migrations
                 column: "IdLaboratoryFk");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProductMovement_IdMovementTypeFk",
+                name: "IX_ProductMovement_IdProductFk",
                 table: "ProductMovement",
-                column: "IdMovementTypeFk");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductMovement_ProductId",
-                table: "ProductMovement",
-                column: "ProductId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_ProductSupplier_IdProductFk",
-                table: "ProductSupplier",
                 column: "IdProductFk");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_RefreshToken_User_IdUserFk",
-                table: "RefreshToken",
-                column: "IdUserFk",
-                principalTable: "User",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+            migrationBuilder.CreateIndex(
+                name: "IX_ProductSuppliers_IdProductFk",
+                table: "ProductSuppliers",
+                column: "IdProductFk");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_UsersRoles_Role_IdRoleFk",
+            migrationBuilder.CreateIndex(
+                name: "IX_RefreshToken_IdUserFk",
+                table: "RefreshToken",
+                column: "IdUserFk");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UsersRoles_IdUserFk",
                 table: "UsersRoles",
-                column: "IdRoleFk",
-                principalTable: "Role",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
+                column: "IdUserFk");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_RefreshToken_User_IdUserFk",
-                table: "RefreshToken");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_UsersRoles_Role_IdRoleFk",
-                table: "UsersRoles");
-
             migrationBuilder.DropTable(
                 name: "MedicalTreatment");
 
@@ -534,19 +539,31 @@ namespace Persistence.Data.Migrations
                 name: "MovementDetail");
 
             migrationBuilder.DropTable(
-                name: "ProductSupplier");
+                name: "ProductSuppliers");
+
+            migrationBuilder.DropTable(
+                name: "RefreshToken");
+
+            migrationBuilder.DropTable(
+                name: "UsersRoles");
 
             migrationBuilder.DropTable(
                 name: "Appointment");
 
             migrationBuilder.DropTable(
+                name: "MovementType");
+
+            migrationBuilder.DropTable(
                 name: "ProductMovement");
 
             migrationBuilder.DropTable(
-                name: "Pet");
+                name: "Role");
 
             migrationBuilder.DropTable(
-                name: "MovementType");
+                name: "User");
+
+            migrationBuilder.DropTable(
+                name: "Pet");
 
             migrationBuilder.DropTable(
                 name: "Product");
@@ -568,76 +585,6 @@ namespace Persistence.Data.Migrations
 
             migrationBuilder.DropTable(
                 name: "PersonType");
-
-            migrationBuilder.DropIndex(
-                name: "IX_RefreshToken_IdUserFk",
-                table: "RefreshToken");
-
-            migrationBuilder.RenameColumn(
-                name: "IdRoleFk",
-                table: "UsersRoles",
-                newName: "IdRolFk");
-
-            migrationBuilder.AlterColumn<string>(
-                name: "Token",
-                table: "RefreshToken",
-                type: "longtext",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "varchar(300)",
-                oldMaxLength: 300)
-                .Annotation("MySql:CharSet", "utf8mb4")
-                .OldAnnotation("MySql:CharSet", "utf8mb4");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Revoked",
-                table: "RefreshToken",
-                type: "datetime(6)",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "DateTime");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Expires",
-                table: "RefreshToken",
-                type: "datetime(6)",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "DateTime");
-
-            migrationBuilder.AlterColumn<DateTime>(
-                name: "Created",
-                table: "RefreshToken",
-                type: "datetime(6)",
-                nullable: false,
-                oldClrType: typeof(DateTime),
-                oldType: "DateTime");
-
-            migrationBuilder.AddColumn<int>(
-                name: "userId",
-                table: "RefreshToken",
-                type: "int",
-                nullable: true);
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RefreshToken_userId",
-                table: "RefreshToken",
-                column: "userId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_RefreshToken_User_userId",
-                table: "RefreshToken",
-                column: "userId",
-                principalTable: "User",
-                principalColumn: "Id");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_UsersRoles_Role_IdRolFk",
-                table: "UsersRoles",
-                column: "IdRolFk",
-                principalTable: "Role",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Cascade);
         }
     }
 }

@@ -45,7 +45,32 @@ namespace Application.Repository;
                             .Include(p => p.Owner)
                             .ToListAsync();
     }
-    
+    public override async Task<IEnumerable<Pet>> GetAllAsync()
+    {
+        return await _context.Pets
+                            .Include(p => p.Owner)
+                            .Include(p => p.Species)
+                            .Include(p => p.Breed)
+                            .ToListAsync();
+    }
+    public override async Task<(int totalRegistros, IEnumerable<Pet> registros)> GetAllAsync(int pageIndex, int pageSize, string search)
+    {
+        var query = _context.Pets as IQueryable<Pet>;
+        if(!string.IsNullOrEmpty(search))
+        {
+            query = query.Where(p => p.Name.ToUpper() == search.ToUpper());
+        }
+        query = query.OrderBy(p => p.Id);
+        var totalRegistros = await query.CountAsync();
+        var registros = await query
+            .Include(p => p.Owner)
+            .Include(p => p.Species)
+            .Include(p => p.Breed)                
+            .Skip((pageIndex - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync();
+        return (totalRegistros, registros);
+    }
 
         
 }

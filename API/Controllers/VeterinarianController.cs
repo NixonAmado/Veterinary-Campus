@@ -3,6 +3,7 @@ using API.Helpers;
 using AutoMapper;
 using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers;
@@ -21,6 +22,7 @@ namespace API.Controllers;
         }
         //Listar las mascotas que fueron atendidas por un determinado veterinario.
         [HttpGet("PetsAttendedByVet/{veterinarian}")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -32,6 +34,7 @@ namespace API.Controllers;
 
         //Crear un consulta que permita visualizar los veterinarios cuya especialidad sea X.
         [HttpGet("GetByEspeciality/{Especiality}")]
+        [Authorize(Roles = "Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -43,6 +46,7 @@ namespace API.Controllers;
 
 
         [HttpGet]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
@@ -55,16 +59,18 @@ namespace API.Controllers;
 
         [HttpGet]
         [MapToApiVersion("1.1")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Pager<VeterinarianDto>>> Get11([FromQuery] Params VeterinarianParams )
         {
-            var veterinarian = await _unitOfWork.People.GetAllAsync(VeterinarianParams.PageIndex,VeterinarianParams.PageSize,VeterinarianParams.Search);
+            var veterinarian = await _unitOfWork.People.GetAllPeopleAsync(VeterinarianParams.PageIndex,VeterinarianParams.PageSize,VeterinarianParams.Search,"veterinario");
             var lstVeterinarianDto = _mapper.Map<List<VeterinarianDto>>(veterinarian.registros);
             return new Pager<VeterinarianDto>(lstVeterinarianDto,veterinarian.totalRegistros,VeterinarianParams.PageIndex,VeterinarianParams.PageSize,VeterinarianParams.Search);
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Get(int Id)
@@ -76,6 +82,7 @@ namespace API.Controllers;
 
 
         [HttpPost]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult<Person>> Post(Person Veterinarian)
@@ -90,6 +97,7 @@ namespace API.Controllers;
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task <ActionResult<Person>> Put(int id, [FromBody] Person Veterinarian)
@@ -105,6 +113,7 @@ namespace API.Controllers;
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Delete(int id)
