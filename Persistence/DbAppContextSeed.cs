@@ -344,14 +344,6 @@ public class DbAppContextSeed
                 }
             }
         }    
-
-// Id,Name,Email,PhoneNumber,IdPersonTypeFk,IdEspecialityFk
-// 1,nixon,nixonamado00@gmail.com,301851553,1	
-// 2,amado,amado@gmail.com,310851553,1
-// 3,carlos,carlos@gmail.com,301242122,2,1
-// 4,Maria,Danzas@gmail.com,321321122,2,2
-// 5,Jose,Jose@gmail.com,321312312,3,	
-// 6,Milton,militon@gmail.com,21312211,3    
         catch (Exception ex)
         {
             var logger = loggerFactory.CreateLogger<DbAppContext>();

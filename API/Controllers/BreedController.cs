@@ -87,17 +87,16 @@ namespace API.Controllers;
         [Authorize(Roles = "Empleado,Administrador")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task <ActionResult<BreedDto>> Put(int id, [FromBody] BreedDto BreedDto)
+        public async Task <ActionResult<Breed>> Put(int id, [FromBody] Breed Breed)
         {
-            if (BreedDto == null)
+            if (Breed == null)
             {
                 return NotFound();
             }
-            var appoinment = _mapper.Map<Breed>(BreedDto);
-            _unitOfWork.Breeds.Update(appoinment);
+            _unitOfWork.Breeds.Update(Breed);
             await _unitOfWork.SaveAsync();
 
-            return BreedDto;
+            return Breed;
         }
 
         [HttpDelete("{id}")]
