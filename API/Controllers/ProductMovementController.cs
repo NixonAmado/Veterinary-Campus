@@ -65,13 +65,11 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<ProductMovementDto>> Get(int Id)
         {
             var productMovement = await _unitOfWork.ProductMovements.GetByIdAsync(Id);
-            return Ok(productMovement);
+            return _mapper.Map<ProductMovementDto>(productMovement);
         }
-
-
 
         [HttpPost]
         [Authorize(Roles = "Administrador,Empleado")]

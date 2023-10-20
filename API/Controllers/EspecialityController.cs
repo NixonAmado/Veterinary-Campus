@@ -45,13 +45,15 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<EspecialityDto>> Get(int Id)
         {
             var especiality = await _unitOfWork.Especialities.GetByIdAsync(Id);
-            return Ok(especiality);
+            return _mapper.Map<EspecialityDto>(especiality);
         }
+
 
 
 

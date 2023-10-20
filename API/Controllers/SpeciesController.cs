@@ -59,12 +59,11 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<SpeciesDto>> Get(int Id)
         {
             var species = await _unitOfWork.Species.GetByIdAsync(Id);
-            return Ok(species);
+            return _mapper.Map<SpeciesDto>(species);
         }
-
 
 
         [HttpPost]

@@ -64,10 +64,10 @@ namespace API.Controllers;
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)] 
 
-        public async Task<ActionResult<IEnumerable<FullPetDto>>> Get() 
+        public async Task<ActionResult<IEnumerable<PetStatDto>>> Get() 
         {
             var pets = await _unitOfWork.Pets.GetAllAsync();
-            return _mapper.Map<List<FullPetDto>>(pets);        
+            return _mapper.Map<List<PetStatDto>>(pets);        
         }
 
 
@@ -87,11 +87,12 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<PetStatDto>> Get(int Id)
         {
-            var pets = await _unitOfWork.Pets.GetByIdAsync(Id);
-            return Ok(pets);
+            var pet = await _unitOfWork.Pets.GetByIdAsync(Id);
+            return _mapper.Map<PetStatDto>(pet);
         }
+
 
 
 

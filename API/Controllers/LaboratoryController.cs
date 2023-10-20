@@ -44,12 +44,13 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<LaboratoryDto>> Get(int Id)
         {
             var laboratory = await _unitOfWork.Laboratories.GetByIdAsync(Id);
-            return Ok(laboratory);
+            return _mapper.Map<LaboratoryDto>(laboratory);
         }
 
 

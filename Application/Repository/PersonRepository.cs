@@ -78,6 +78,26 @@ namespace Application.Repository;
                             .Where(p => p.PersonType.Description.ToLower() == "PROOVEDOR")
                             .ToListAsync();
     }
+    public async Task<Person> GetOwnerByIdAsync(int id)
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "PROPIETARIO")
+                                .FirstAsync(p => p.Id == id);
+
+    }
+        public async Task<Person> GetVeterinarianByIdAsync(int id)
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "VETERINARIO")
+                                .FirstAsync(p => p.Id == id);
+
+    }
+        public async Task<Person> GetSupplierByIdAsync(int id)
+    {
+        return await _context.People
+                            .Where(p => p.PersonType.Description.ToLower() == "PROOVEDOR")
+                                .FirstAsync(p => p.Id == id);
+    }
     //======================================================================================================================
     public async Task<(int totalRegistros, IEnumerable<Person> registros)> GetAllPersonAsync(int pageIndex, int pageSize, string search, string person)
         {
@@ -98,3 +118,4 @@ namespace Application.Repository;
         }
 
     }
+

@@ -62,10 +62,10 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<SupplierDto>> Get(int Id)
         {
-            var people = await _unitOfWork.People.GetByIdAsync(Id);
-            return Ok(people);
+            var supplier = await _unitOfWork.People.GetOwnerByIdAsync(Id);
+            return _mapper.Map<SupplierDto>(supplier);
         }
 
 

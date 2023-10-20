@@ -32,7 +32,7 @@ namespace Application.Repository;
     {
         return await _context.Products
                             .Include(p => p.Laboratory)
-                            .FirstOrDefaultAsync();
+                                .FirstAsync(p => id == p.Id);
     }
     public override async Task<IEnumerable<Product>> GetAllAsync()
     {

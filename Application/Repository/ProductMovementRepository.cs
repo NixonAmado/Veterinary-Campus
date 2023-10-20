@@ -31,7 +31,7 @@ namespace Application.Repository;
         {
             return await _context.ProductMovements
                                 .Include(p => p.Product)
-                                .FirstOrDefaultAsync();
+                                .FirstAsync(p => id == p.Id);
         }
         public override async Task<IEnumerable<ProductMovement>> GetAllAsync()
         {

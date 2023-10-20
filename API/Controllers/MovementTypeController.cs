@@ -44,12 +44,13 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<MovementTypeDto>> Get(int Id)
         {
-            var movementTypes = await _unitOfWork.MovementTypes.GetByIdAsync(Id);
-            return Ok(movementTypes);
+            var appointment = await _unitOfWork.Appointments.GetByIdAsync(Id);
+            return _mapper.Map<MovementTypeDto>(appointment);
         }
 
 

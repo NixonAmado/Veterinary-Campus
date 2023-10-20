@@ -9,8 +9,8 @@ namespace API.Dtos
     {
         public int Id {get;set;}
         public string Name {get;set;}
-        public SpeciesNameDto Species {get;set;}
-        public BreedDto Breed {get;set;}//raza
+        public string Species {get;set;}
+        public string Breed {get;set;}//raza
         public DateTime Birthdate {get;set;}
     }
 }

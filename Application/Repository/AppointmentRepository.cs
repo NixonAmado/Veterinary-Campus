@@ -21,7 +21,8 @@ namespace Application.Repository;
                                 .ThenInclude(p => p.Breeds)
                                 .Include(p => p.Veterinarian)
                                 .ThenInclude(p => p.Especiality)
-                                .FirstOrDefaultAsync();
+                                .FirstAsync(p => id == p.Id);
+                                
         }
         public override async Task<IEnumerable<Appointment>> GetAllAsync()
         {

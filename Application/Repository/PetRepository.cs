@@ -22,6 +22,14 @@ namespace Application.Repository;
                             .Include(p => p.Species)
                             .ToListAsync();
     }
+    public async Task<Pet> GetByIdAsync (int id)
+    {
+        return await _context.Pets
+                            .Include(p => p.Breed)
+                            .Include(p => p.Species)
+                            .FirstAsync(p => id == p.Id);
+    }
+
 
     //Listar las mascotas que fueron atendidas por motivo de vacunacion en el X trimestre del X --OK
     public async Task<IEnumerable<Pet>> GetAttendedByReasonInTrimesterYear( int trim, int year, string reason)
@@ -47,14 +55,6 @@ namespace Application.Repository;
                             .Include(p => p.Species)
                             .Include(p => p.Owner)
                             .ToListAsync();
-    }
-    public override async Task<Pet> GetByIdAsync(int id)
-    {
-        return await _context.Pets
-                            .Include(p => p.Owner)
-                            .Include(p => p.Species)
-                            .Include(p => p.Breed)
-                            .FirstOrDefaultAsync();
     }
     public override async Task<IEnumerable<Pet>> GetAllAsync()
     {

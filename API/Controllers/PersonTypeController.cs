@@ -43,15 +43,16 @@ namespace API.Controllers;
             var lstPersonTypeDto = _mapper.Map<List<PersonTypeDto>>(personTypes.registros);
             return new Pager<PersonTypeDto>(lstPersonTypeDto,personTypes.totalRegistros,PersonTypeParams.PageIndex,PersonTypeParams.PageSize,PersonTypeParams.Search);
         }
-
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<PersonTypeDto>> Get(int Id)
         {
             var personType = await _unitOfWork.PersonTypes.GetByIdAsync(Id);
-            return Ok(personType);
+            return _mapper.Map<PersonTypeDto>(personType);
         }
+
 
 
 

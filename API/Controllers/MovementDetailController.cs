@@ -44,14 +44,14 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<MovementDetailDto>> Get(int Id)
         {
-            var movementDetails = await _unitOfWork.MovementDetails.GetByIdAsync(Id);
-            return Ok(movementDetails);
+            var movementDetail = await _unitOfWork.MovementDetails.GetByIdAsync(Id);
+            return _mapper.Map<MovementDetailDto>(movementDetail);
         }
-
 
 
         [HttpPost]

@@ -73,10 +73,10 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<VeterinarianDto> Get(int Id)
         {
-            var veterinarian = await _unitOfWork.People.GetByIdAsync(Id);
-            return Ok(veterinarian);
+            var veterinarian = await _unitOfWork.People.GetVeterinarianByIdAsync(Id);
+            return _mapper.Map<VeterinarianDto>(veterinarian);
         }
 
 

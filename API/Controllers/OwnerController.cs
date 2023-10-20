@@ -60,10 +60,18 @@ namespace API.Controllers;
         [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<OwnerDto>> Get(int Id)
         {
-            var owner = await _unitOfWork.People.GetByIdAsync(Id);
-            return Ok(owner);
+        try
+        {
+            var owner = await _unitOfWork.People.GetOwnerByIdAsync(Id);
+            return _mapper.Map<OwnerDto>(owner);
+        }
+        catch (Exception ex)
+        {
+            return Ok("Este usuario no existe");
+            // Manejar la excepción, registrarla, etc.
+        }
         }
 
 

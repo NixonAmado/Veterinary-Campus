@@ -15,7 +15,11 @@ public class MappingProfiles : Profile
         CreateMap<Laboratory, LaboratoryDto>().ReverseMap();
         CreateMap<Species, SpeciesDto>().ReverseMap();
         CreateMap<Pet, FullPetDto>().ReverseMap();
-        CreateMap<Pet, PetStatDto>().ReverseMap();
+        CreateMap<Pet, PetStatDto>()
+        .ForMember(e => e.Breed, op => op.MapFrom(e => e.Breed.Name))
+        .ForMember(e => e.Species, op => op.MapFrom(e => e.Species.Name))
+
+        .ReverseMap();
         
         CreateMap<Breed, BreedDto>().ReverseMap();
         CreateMap<CountBreed, CountBreedDto>().ReverseMap();

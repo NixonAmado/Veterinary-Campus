@@ -55,14 +55,15 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Empleado,Administrador")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<BreedDto>> Get(int Id)
         {
-            var breed = await _unitOfWork.Breeds.GetByIdAsync(Id);
-            return Ok(breed);
+            var reed = await _unitOfWork.Breeds.GetByIdAsync(Id);
+            return _mapper.Map<BreedDto>(reed);
         }
+
 
 
 

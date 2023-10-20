@@ -44,12 +44,13 @@ namespace API.Controllers;
         }
 
         [HttpGet("{id}")]
+        [Authorize(Roles = "Administrador,Empleado")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public async Task<IActionResult> Get(int Id)
+        public async Task<ActionResult<MedicalTreatment>> Get(int Id)
         {
-            var medicalTreatment = await _unitOfWork.MedicalTreatments.GetByIdAsync(Id);
-            return Ok(medicalTreatment);
+            var medicalTreatMent = await _unitOfWork.MedicalTreatments.GetByIdAsync(Id);
+            return _mapper.Map<MedicalTreatment>(medicalTreatMent);
         }
 
 

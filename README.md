@@ -1,5 +1,5 @@
 # Veterinary-Campus
-# Desarrollo Backend NetCore Filtro Final
+## Desarrollo Backend NetCore - Filtro Final
 
 ## Introducción al Proyecto de Administración de Veterinaria
 
@@ -7,20 +7,52 @@ El proyecto de desarrollo de software tiene como objetivo principal la creación
 
 El sistema contará con diferentes módulos que abarcarán áreas clave como el registro de pacientes, la programación de citas, el seguimiento de tratamientos médicos, la gestión de inventario de medicamentos y productos, así como la generación de reportes y estadísticas relevantes para la toma de decisiones.
 
-El desarrollo se realizará utilizando la tecnología NetCore Version 7.0, que proporciona un entorno robusto y escalable para la creación de aplicaciones web. Se implementarán las mejores prácticas de desarrollo de software para garantizar la calidad y fiabilidad del sistema.
+El desarrollo se realizará utilizando la tecnología **NetCore Version 7.0**, que proporciona un entorno robusto y escalable para la creación de aplicaciones web. Se implementarán las mejores prácticas de desarrollo de software para garantizar la calidad y fiabilidad del sistema.
 
 El proyecto de administración de veterinaria tiene como objetivo mejorar la eficiencia y la experiencia del cliente, al tiempo que facilita la gestión interna de la veterinaria. Se espera que este sistema contribuya positivamente al crecimiento y éxito del negocio.
 
 ## Contexto
 
-La solucion a este proyecto se modicó ligeramente para eliminar el duplicado de entidades, por lo tanto, se tiene una sola entidad(Person) que engloba a :
- - Proovedor
+La solución a este proyecto se modificó ligeramente para eliminar el duplicado de entidades, por lo tanto, se tiene una sola entidad (**Person**) que engloba a:
+ - Proveedor
  - Veterinario
  - Propietario
 
-Para manejar el tipo de persona se a creado una entidad llamada PersonType la cual se va a encargar de establecer el tipo a la persona. Como Veterinario tiene una propiedad especial llamada Especialidad, decidí crear una tabla especialidad que liga a persona en general, por ende este campo puede ser null, ya que, no todas las personas tienen esa propiedad (Especialidad).   
+Para manejar el tipo de persona se ha creado una entidad llamada **PersonType**, la cual se encargará de establecer el tipo a la persona. Como el rol de Veterinario tiene una propiedad especial llamada **Especialidad**, se ha decidido crear una tabla **Especialidad** que se relaciona con todas las personas en general. Por ende, este campo puede ser nulo, ya que no todas las personas tienen esa propiedad (Especialidad).   
 
-Este proyecto se ha desarrollado con Csv, por ende, cuando se haga dotnet run, debería cargarse los datos a la bd de manera automatica
+Este proyecto se ha desarrollado con archivos CSV, por lo tanto, cuando se ejecute `dotnet run`, los datos se cargarán en la base de datos de manera automática. La única excepción es la carga de usuarios.
+
+
+
+Para el CRUD, exceptuando las operaciones GET, se basan en la entidad original, aunque el el swagger se muestre de esta manera:
+![Alt text](/ImagesReadMe/explicacionBasica.png)
+Solo hay que pasarle los atributos y la foranea :
+![Alt text](/ImagesReadMe/demostracion.png)
+
+
+
+## Uso de Json Web Token
+
+Ya que no se cargan usuarios en la base de datos por medio de csvs, es necesesario crearlo. Por defecto el rol de usuario va ser Empleado, el cual puede hacer peticiones a todo el CRUD menos a los enpoints especiales. Cuando se prueben los endpoints es necesario que el usuario tenga el rol de Administrador el cual se le asigna por medio del addrole. 
+
+Los datos necesarios para poder hacer post a los endpoints de JWT y en general se encuetran más facilmente en el Swagger, que se incializa por medio de dotnet watch run.
+
+Nota: He tenido inconvenientes con la autorización, ya que, en vez de lanzarme la respuesta 401 o 403, me lanza 404 Not found, pero si le pasamos en token igualmente funcionará.
+
+Si el token caduca, el programa esta diseñado para que por medio de su refresh token pueda generar otro.
+
+### Tomamos el refresh token
+![Alt text](/ImagesReadMe/refreshEnToken.png)
+
+### creamos la cookie y apartir de ese refresh token se generan nuevos tokens
+Si el token expira podemos generar cuantos queramos con el mismo refresh token. Si el refresh token expira se debe generar otro token desde el endpoint token.
+- Duración del refresh token: 1 hora
+- Duración del token de acceso: 1 minuto
+![Alt text](/ImagesReadMe/refreshToken.png)
+
+Si se presentan inconvenientes a la hora de generar un nuevo token desde el refresh token hay que borrar las cookies.
+![Alt text](/ImagesReadMe/Cookies.png)
+
 
 
 # Consultas
@@ -32,7 +64,7 @@ Este proyecto se ha desarrollado con Csv, por ende, cuando se haga dotnet run, d
 ![Alt text](ImagesReadMe/logicaP1.png)
  ### Peticion Thunder
  ```
-Ruta =  API/Veterinarian/GetByEspeciality/Cirujano vascular
+  API/Veterinarian/GetByEspeciality/Cirujano vascular
  ```
 ![Alt text](/ImagesReadMe/Consulta1.png)
 
@@ -41,7 +73,7 @@ Ruta =  API/Veterinarian/GetByEspeciality/Cirujano vascular
 ![Alt text](ImagesReadMe/logicaP2.png)
  ### Peticion Thunder
  ```
-Ruta = API/Product/GetByLab/Genfar
+ API/Product/GetByLab/Genfar
 ```
 ![Alt text](/ImagesReadMe/consulta2.png)
 
@@ -50,7 +82,7 @@ Ruta = API/Product/GetByLab/Genfar
 ![Alt text](ImagesReadMe/logicaP3.png)
  ### Peticion Thunder
 ```
-Ruta = API/Pet/GetOwnerPetByBreed/golden retriver
+ API/Pet/GetOwnerPetByBreed/golden retriver
 ```
 ![Alt text](/ImagesReadMe/consulta3.png)
 
@@ -59,7 +91,7 @@ Ruta = API/Pet/GetOwnerPetByBreed/golden retriver
 ![Alt text](ImagesReadMe/logicaP4.png)
  ### Peticion Thunder
 ```
-Ruta = API/Owner/GetAllOwnersAndPets
+ API/Owner/GetAllOwnersAndPets
 ```
 ![Alt text](/ImagesReadMe/consulta4.png)
 
@@ -68,7 +100,7 @@ Ruta = API/Owner/GetAllOwnersAndPets
 ![Alt text](ImagesReadMe/logicaP5.png)
  ### Peticion Thunder
 ```
-Ruta = API/Product/GetGreaterThan/50000
+ API/Product/GetGreaterThan/50000
 ```
 ![Alt text](/ImagesReadMe/consulta5.png)
 
@@ -77,7 +109,7 @@ Ruta = API/Product/GetGreaterThan/50000
 ![Alt text](ImagesReadMe/logicaP6.png)
  ### Peticion Thunder
 ```
-Ruta = API/Pet/GetByReasonInTrimYear/3/2023/vacunacion
+ API/Pet/GetByReasonInTrimYear/3/2023/vacunacion
 ```
 ![Alt text](/ImagesReadMe/consulta6.png)
 ## Grupo B
@@ -86,7 +118,7 @@ Ruta = API/Pet/GetByReasonInTrimYear/3/2023/vacunacion
 ![Alt text](ImagesReadMe/logicaP7.png)
  ### Peticion Thunder
 ```
-Ruta = API/Species/GetPetGroupedBySpecies
+ API/Species/GetPetGroupedBySpecies
 ```
 ![Alt text](/ImagesReadMe/consulta7.png)
 
@@ -95,7 +127,7 @@ Ruta = API/Species/GetPetGroupedBySpecies
 ![Alt text](ImagesReadMe/logicaP8.png)
  ### Peticion Thunder
 ```
-Ruta = API/ProductMovement/GetProductMovementAndVal
+ API/ProductMovement/GetProductMovementAndVal
 ```
 ![Alt text](/ImagesReadMe/consulta8.png)
 
@@ -104,7 +136,7 @@ Ruta = API/ProductMovement/GetProductMovementAndVal
 ![Alt text](ImagesReadMe/logicaP9.png)
  ### Peticion Thunder
 ```
-Ruta = API/Veterinarian/PetsAttendedByVet/Carlos
+ API/Veterinarian/PetsAttendedByVet/Carlos
 ```
 ![Alt text](/ImagesReadMe/consulta9.png)
 
@@ -113,7 +145,7 @@ Ruta = API/Veterinarian/PetsAttendedByVet/Carlos
 ![Alt text](ImagesReadMe/logicaP10.png)
  ### Peticion Thunder
 ```
-Ruta = API/Supplier/GetSuppliersByProduct/Dopamina
+ API/Supplier/GetSuppliersByProduct/Dopamina
 ```
 ![Alt text](/ImagesReadMe/consulta10.png)
 ## Listar las mascotas y sus propietarios cuya raza sea X
@@ -121,22 +153,17 @@ Ruta = API/Supplier/GetSuppliersByProduct/Dopamina
 ![Alt text](ImagesReadMe/logicaP11.png)
  ### Peticion Thunder
 ```
-Ruta = API/Pet/GetOwnerPetByBreed/Golden retriver
+ API/Pet/GetOwnerPetByBreed/Golden retriver
 ```
 ![Alt text](/ImagesReadMe/consulta11.png)
 
-## Listar la cantidad de mascotas que pertenecen a una raza a una raza. Nota: Se debe mostrar una lista de las razas y la cantidad de mascotas que pertenecen a la raza.
+## Listar la cantidad de mascotas que pertenecen a una raza. Nota: Se debe mostrar una lista de las razas y la cantidad de mascotas que pertenecen a la raza.
 ### Logica Peticion  
 ![Alt text](ImagesReadMe/logicaP12.png)
  ### Peticion Thunder
 ```
-Ruta = API/Breed/GetPetCountInBreed
+ API/Breed/GetPetCountInBreed
 ```
 ![Alt text](/ImagesReadMe/consulta12.png)
 
-```
-```
-Para el crud exceptuando los get no  usan Dto, se basen en la entidad original, aunque el el swagger se muestre algo así
-![Alt text](/ImagesReadMe/explicacionBasica.png)
-en realidad solo hay que pasarle los atributos y la foranea como esto:
-![Alt text](/ImagesReadMe/demostracion.png)
+

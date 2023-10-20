@@ -17,7 +17,8 @@ namespace Application.Repository;
         {
             return await _context.MedicalTreatments
                                 .Include(p => p.Product)
-                                .FirstOrDefaultAsync();
+                                .FirstAsync(p => p.Id == id);
+;
         }
         public override async Task<IEnumerable<MedicalTreatment>> GetAllAsync()
         {

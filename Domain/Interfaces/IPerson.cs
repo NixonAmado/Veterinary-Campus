@@ -10,6 +10,10 @@ public interface IPerson : IGenericRepository<Person>
     Task<IEnumerable<Person>> GetAllOwnersAsync();
     Task<IEnumerable<Person>> GetAllVeterinarianAsync();
     Task<IEnumerable<Person>> GetAllSuppliersAsync();
+    Task<Person> GetSupplierByIdAsync(int id);
+    Task<Person> GetOwnerByIdAsync(int id);
+    Task<Person> GetVeterinarianByIdAsync(int id);
+    
     Task<(int totalRegistros, IEnumerable<Person> registros)> GetAllPeopleAsync(int pageIndex, int pageSize, string search, string person);
 
 }
